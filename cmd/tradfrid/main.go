@@ -7,7 +7,18 @@ import (
     "tradfrid/proto"
     "github.com/dyrkin/zigbee-steward"
     "github.com/dyrkin/zigbee-steward/configuration"
+    "github.com/dyrkin/zigbee-steward/model"
+    "strconv"
 )
+
+var devices = map[uint64]*model.Device{}
+
+func addDevice(dev *model.Device) {
+    log.Print("Found device: ", dev)
+    addr, _ := strconv.ParseUint(dev.IEEEAddress, 0, 64)
+    devices[addr] = dev
+    log.Print(devices)
+}
 
 func main() {
     log.Print("Starting")
@@ -21,8 +32,10 @@ func main() {
     handleZnpEvent := func() {
         for {
             select {
-            case device := <-stewie.Channels().OnDeviceRegistered():
-                log.Print("Register device: ", device)
+            case dev:= <-stewie.Channels().OnDeviceBecameAvailable():
+                addDevice(dev)
+            case dev:= <-stewie.Channels().OnDeviceRegistered():
+                addDevice(dev)
             }
         }
     }
