@@ -15,20 +15,14 @@ func main() {
     client.Connect("tcp://localhost:5432")
     fmt.Println("Connected");
 
-    req := &arith.Req {
-        Op: arith.OP_ADD.Enum(),
-        A: proto.Uint32(1),
-        B: proto.Uint32(2),
+    req := &remote.Req{
+        Type: remote.ReqType_GetDevices.Enum(),
     }
-
     req_data, _ := proto.Marshal(req)
-    fmt.Println("sending ", req_data)
     client.SendBytes(req_data, 0)
-    fmt.Println("Sent ", req_data)
 
     resp_data, _ := client.RecvBytes(0)
-    fmt.Println("Recv ", resp_data)
-    resp := &arith.Resp{}
+    resp := &remote.GetDevicesResp{}
     _ = proto.Unmarshal(resp_data, resp)
-    fmt.Println(*resp.R)
+    fmt.Println(*resp)
 }

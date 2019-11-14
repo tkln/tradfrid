@@ -1,0 +1,19 @@
+syntax = "proto2";
+package remote;
+
+message Device {
+    required uint64 ieeeAddr = 1;
+    required string model = 2;
+}
+
+message GetDevicesResp {
+    repeated Device devices = 1;
+}
+
+enum ReqType {
+    GetDevices = 1;
+}
+
+message Req {
+    required ReqType type = 1;
+}

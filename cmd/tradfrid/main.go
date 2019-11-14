@@ -48,20 +48,25 @@ func main() {
 
     stewie.Start()
     for {
-        req := &arith.Req{}
+        log.Print("Req");
+        req := &remote.Req{}
         req_data, _ := server.RecvBytes(0)
         _ = proto.Unmarshal(req_data, req)
-        log.Print("Recv: ", req)
 
-        resp := &arith.Resp{}
-        if *req.Op == arith.OP_ADD {
-            resp.R = proto.Uint32(*req.A + *req.B)
-        } else {
-            resp.R = proto.Uint32(*req.A - *req.B)
+        switch *req.Type {
+        case remote.ReqType_GetDevices:
+            log.Print("Get devices req");
+            resp := &remote.GetDevicesResp{}
+            for k, v := range devices {
+                dev := &remote.Device{
+                    IeeeAddr: proto.Uint64(k),
+                    Model: proto.String(v.Model),
+                }
+                log.Print(dev)
+                resp.Devices = append(resp.Devices, dev)
+            }
+            resp_data, _ := proto.Marshal(resp);
+            server.SendBytes(resp_data, 0);
         }
-
-        resp_data, _ := proto.Marshal(resp);
-        server.SendBytes(resp_data, 0)
-        log.Print("Sent: ", resp)
     }
 }
