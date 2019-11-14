@@ -1,0 +1,17 @@
+syntax = "proto2";
+package arith;
+
+enum OP {
+    ADD = 0;
+    SUB = 1;
+};
+
+message Req {
+    required OP op = 1;
+    required uint32 a = 2;
+    optional uint32 b = 3;
+}
+
+message Resp {
+    required uint32 r = 1;
+}
