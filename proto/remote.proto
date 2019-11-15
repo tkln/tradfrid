@@ -10,10 +10,24 @@ message GetDevicesResp {
     repeated Device devices = 1;
 }
 
+message SetDeviceStateReq {
+    required uint64 ieeeAddr = 1;
+    oneof data {
+        bool onoff = 2;
+        float level = 3;
+    }
+}
+
+message StatusResp {
+    required int32 status = 1;
+}
+
 enum ReqType {
     GetDevices = 1;
+    SetDeviceState = 2;
 }
 
 message Req {
     required ReqType type = 1;
+    optional SetDeviceStateReq setDeviceState = 2;
 }
