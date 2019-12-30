@@ -14,7 +14,8 @@ func main() {
     client, _ := zmq.NewSocket(zmq.REQ)
     defer client.Close()
 
-    client.Connect("tcp://localhost:5432")
+    client.Connect("tcp://10.23.1.9:5432")
+    //client.Connect("tcp://localhost:5432")
     fmt.Println("Connected");
 
     req := &remote.Req{
