@@ -6,7 +6,7 @@ import (
     "strconv"
     zmq "github.com/pebbe/zmq4"
     "github.com/golang/protobuf/proto"
-    "github.com/tkln/tradfrid/proto"
+    "github.com/tkln/tradfrid/api"
 )
 
 func main() {
