@@ -1,5 +1,5 @@
 CMDS=tradfri tradfrid
-PROTO=proto/remote.pb.go
+PROTO=api/remote.pb.go
 
 tradfri: $(PROTO)
 tradfrid: $(PROTO)

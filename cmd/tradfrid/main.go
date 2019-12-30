@@ -5,7 +5,7 @@ import (
     "log"
     zmq "github.com/pebbe/zmq4"
     "github.com/golang/protobuf/proto"
-    "github.com/tkln/tradfrid/proto"
+    "github.com/tkln/tradfrid/api"
     "github.com/dyrkin/zigbee-steward"
     "github.com/dyrkin/zigbee-steward/configuration"
     "github.com/dyrkin/zigbee-steward/model"
