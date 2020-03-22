@@ -10,16 +10,23 @@ import (
 )
 
 func main() {
+    var verbose bool
+
+    flag.BoolVar(&verbose, "v", false, "Verbose mode")
+
     flag.Parse()
     args := flag.Args()
 
-    fmt.Println("Connecting");
+    if verbose {
+        fmt.Println("Connecting");
+    }
     client, _ := zmq.NewSocket(zmq.REQ)
     defer client.Close()
 
-    client.Connect("tcp://10.23.1.9:5432")
-    //client.Connect("tcp://localhost:5432")
-    fmt.Println("Connected");
+    client.Connect("tcp://10.23.1.10:5432")
+    if verbose {
+        fmt.Println("Connected");
+    }
 
     req := &remote.Req{
         Type: remote.ReqType_GetDevices.Enum(),
@@ -31,7 +38,6 @@ func main() {
     resp := &remote.GetDevicesResp{}
     _ = proto.Unmarshal(resp_data, resp)
     devices := resp.Devices
-    fmt.Println(devices)
 
     if len(args) > 1 {
         state := &remote.SetDeviceStateReq{}
@@ -47,7 +53,9 @@ func main() {
             }
         }
         for _, dev := range devices {
-            fmt.Println(dev)
+            if verbose {
+                fmt.Println(dev)
+            }
             state.IeeeAddr = proto.Uint64(*dev.IeeeAddr);
             req := &remote.Req{
                 Type: remote.ReqType_SetDeviceState.Enum(),
@@ -59,8 +67,6 @@ func main() {
             resp_data, _ := client.RecvBytes(0)
             resp := &remote.GetDevicesResp{}
             _ = proto.Unmarshal(resp_data, resp)
-            devices := resp.Devices
-            fmt.Println(devices)
         }
     }
 }
