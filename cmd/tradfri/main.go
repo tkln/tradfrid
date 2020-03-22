@@ -43,7 +43,7 @@ func main() {
     _ = proto.Unmarshal(resp_data, resp)
     devices := resp.Devices
 
-    if len(args) > 1 {
+    if len(args) > 0 {
         state := &remote.SetDeviceStateReq{}
         switch args[0] {
         case "on":
