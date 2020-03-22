@@ -11,8 +11,12 @@ import (
 
 func main() {
     var verbose bool
+    var host string
+    var port string
 
     flag.BoolVar(&verbose, "v", false, "Verbose mode")
+    flag.StringVar(&host, "H", "10.23.1.10", "Host")
+    flag.StringVar(&port, "p", "5432", "Port")
 
     flag.Parse()
     args := flag.Args()
@@ -23,7 +27,7 @@ func main() {
     client, _ := zmq.NewSocket(zmq.REQ)
     defer client.Close()
 
-    client.Connect("tcp://10.23.1.10:5432")
+    client.Connect("tcp://" + host + ":" + port)
     if verbose {
         fmt.Println("Connected");
     }
