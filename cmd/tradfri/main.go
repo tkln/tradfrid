@@ -55,6 +55,11 @@ func main() {
                 val, _ := strconv.ParseFloat(args[1], 32)
                 state.Data = &remote.SetDeviceStateReq_Level{float32(val)}
             }
+        default:
+            val, err := strconv.ParseFloat(args[0], 32)
+            if err == nil {
+                state.Data = &remote.SetDeviceStateReq_Level{float32(val)}
+            }
         }
         for _, dev := range devices {
             if verbose {
