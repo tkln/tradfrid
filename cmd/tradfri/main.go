@@ -1,8 +1,8 @@
 package main
 
 import (
-    "os"
     "fmt"
+    "flag"
     "strconv"
     zmq "github.com/pebbe/zmq4"
     "github.com/golang/protobuf/proto"
@@ -10,6 +10,9 @@ import (
 )
 
 func main() {
+    flag.Parse()
+    args := flag.Args()
+
     fmt.Println("Connecting");
     client, _ := zmq.NewSocket(zmq.REQ)
     defer client.Close()
@@ -30,16 +33,16 @@ func main() {
     devices := resp.Devices
     fmt.Println(devices)
 
-    if len(os.Args) > 1 {
+    if len(args) > 1 {
         state := &remote.SetDeviceStateReq{}
-        switch os.Args[1] {
+        switch args[0] {
         case "on":
             state.Data = &remote.SetDeviceStateReq_Onoff{true}
         case "off":
             state.Data = &remote.SetDeviceStateReq_Onoff{false}
         case "level":
-            if len(os.Args) > 2 {
-                val, _ := strconv.ParseFloat(os.Args[2], 32)
+            if len(args) > 1 {
+                val, _ := strconv.ParseFloat(args[1], 32)
                 state.Data = &remote.SetDeviceStateReq_Level{float32(val)}
             }
         }
